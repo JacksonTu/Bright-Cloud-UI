@@ -334,14 +334,14 @@ export default {
   common: {
     system: 'Microservice Auth System',
     desc: {
-      a: 'Based on Spring Boot 2.2.0 & Spring Cloud Hoxton.RELEASE',
+      a: 'Based on Spring Boot 2.3.2 & Spring Cloud Hoxton.SR7',
       b: 'Use Spring Cloud OAuth2 Unified Authentication',
       c: 'Authentication server resource server separation, easy to expand',
       d: 'Front-end separation architecture for increased efficiency',
       e: 'Integrate multiple monitoring to escort microservices',
       f: 'Provide detailed documentation and teach you how to build it',
       g: 'Build a highly available microservices cluster by K8S',
-      h: 'Integrated RocketMQ, TX-LCN, Seata distributed transaction control',
+      h: 'Integrated Kafka, Seata distributed transaction control',
       i: 'Data permissions, social login...'
     },
     view: 'Detail',

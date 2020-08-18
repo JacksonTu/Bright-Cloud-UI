@@ -335,14 +335,14 @@ export default {
   common: {
     system: '分布式微服务权限系统',
     desc: {
-      a: '基于Spring Boot 2.2.0 & Spring Cloud Hoxton.RELEASE',
+      a: '基于Spring Boot 2.3.2 & Spring Cloud Hoxton.SR7',
       b: '使用Spring Cloud OAuth2统一认证',
       c: '认证服务器资源服务器分离，方便拓展',
       d: '前后端分离架构，提高软件开发效率',
       e: '集成多种监控，为微服务保驾护航',
       f: '提供详细的文档，手把手教你从零搭建到部署',
       g: 'Kubernetes搭建高可用微服务集群',
-      h: '整合RocketMQ、TX-LCN、Seata分布式事务控制',
+      h: '整合Kafka、Seata分布式事务控制',
       i: '数据权限，社交登录，开箱即用...'
     },
     view: '查看',

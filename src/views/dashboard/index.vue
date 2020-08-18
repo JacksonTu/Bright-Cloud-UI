@@ -119,39 +119,56 @@ export default {
     return {
       server: [{
         id: 1,
+        name: 'Bright-Server-System',
+        port: '8000',
+        description: '微服务子系统，系统模块'
+      }, {
+        id: 2,
         name: 'Bright-Auth',
-        port: '8101',
+        port: '8001',
         description: '微服务认证服务器'
       },
       {
-        id: 2,
+        id: 3,
         name: 'Bright-Gateway',
-        port: '8301',
+        port: '8002',
         description: '微服务网关'
       },
       {
-        id: 3,
-        name: 'Bright-Server-System',
-        port: '8201',
-        description: '微服务子系统，系统模块'
-      },
-      {
         id: 4,
-        name: 'Bright-Server-Test',
-        port: '8202',
-        description: '微服务子系统，Demo模块'
+        name: 'Bright-Server-Job',
+        port: '8003',
+        description: '微服务子系统，任务调度模块'
       },
       {
         id: 5,
-        name: 'Bright-Server-Generator',
-        port: '8203',
-        description: '微服务子系统，代码生成模块'
+        name: 'Bright-Server-Msg',
+        port: '8004',
+        description: '微服务子系统，消息模块'
       },
       {
         id: 6,
-        name: 'Bright-Server-Job',
-        port: '8204',
-        description: '微服务子系统，任务调度模块'
+        name: 'Bright-Server-Generator',
+        port: '8005',
+        description: '微服务子系统，代码生成模块'
+      },
+      {
+        id: 7,
+        name: 'Bright-Admin',
+        port: '8006',
+        description: '微服务子系统，监控模块'
+      },
+      {
+        id: 8,
+        name: 'Bright-Server-Test',
+        port: '8007',
+        description: '微服务子系统，测试模块'
+      },
+      {
+        id: 9,
+        name: 'Bright-Server-Seata',
+        port: '8008',
+        description: '微服务子系统，分布式事务模块'
       }
       ],
       welcomeMessage: '',
