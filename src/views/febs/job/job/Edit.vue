@@ -8,14 +8,35 @@
     :visible.sync="isVisible"
   >
     <el-form ref="form" :model="job" :rules="rules" label-position="right" label-width="129px">
-      <el-form-item :label="$t('table.job.beanName')" prop="beanName">
+      <el-form-item :label="$t('table.job.jobType')" prop="jobType">
+        <el-select v-model="job.jobType" placeholder="" value="" style="width:100%">
+          <el-option label="远程服务" value="1" />
+          <el-option label="本地方法" value="0" />
+        </el-select>
+      </el-form-item>
+      <el-form-item v-if="job.jobType ==='0'" :label="$t('table.job.beanName')" prop="beanName">
         <el-input v-model="job.beanName" />
       </el-form-item>
-      <el-form-item :label="$t('table.job.methodName')" prop="methodName">
+      <el-form-item v-if="job.jobType ==='0'" :label="$t('table.job.methodName')" prop="methodName">
         <el-input v-model="job.methodName" />
       </el-form-item>
-      <el-form-item :label="$t('table.job.params')" prop="params">
+      <el-form-item v-if="job.jobType ==='1'" :label="$t('table.job.serviceId')" prop="serviceId">
+        <el-input v-model="job.serviceId" />
+      </el-form-item>
+      <el-form-item v-if="job.jobType ==='1'" :label="$t('table.job.path')" prop="path">
+        <el-input v-model="job.path" />
+      </el-form-item>
+      <el-form-item v-if="job.jobType ==='1'" :label="$t('table.job.requestMethod')" prop="requestMethod">
+        <el-input v-model="job.requestMethod" />
+      </el-form-item>
+      <el-form-item  v-if="job.jobType ==='1'" :label="$t('table.job.contentType')" prop="contentType">
+        <el-input v-model="job.contentType" />
+      </el-form-item>
+      <el-form-item v-if="job.jobType ==='0'" :label="$t('table.job.params')" prop="params">
         <el-input v-model="job.params" />
+      </el-form-item>
+      <el-form-item :label="$t('table.job.alarmMail')" prop="alarmMail">
+        <el-input v-model="job.alarmMail" />
       </el-form-item>
       <el-form-item :label="$t('table.job.cronExpression')" prop="cronExpression">
         <el-input v-model="job.cronExpression" />
@@ -58,6 +79,12 @@ export default {
       rules: {
         beanName: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
         methodName: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
+        jobType: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
+        serviceId: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
+        path: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
+        requestMethod: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
+        contentType: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
+        alarmMail: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
         cronExpression: [
           { required: true, message: this.$t('rules.require'), trigger: '[ blur]' },
           { validator: (rule, value, callback) => {
@@ -101,7 +128,13 @@ export default {
         methodName: '',
         params: '',
         cronExpression: '',
-        remark: ''
+        remark: '',
+        jobType: '0',
+        serviceId: '',
+        path: '',
+        requestMethod: '',
+        contentType: '',
+        alarmMail: ''
       }
     },
     initWidth() {

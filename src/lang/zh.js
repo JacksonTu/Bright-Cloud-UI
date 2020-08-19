@@ -122,9 +122,15 @@ export default {
       }
     },
     job: {
+      jobType: '任务类型',
       beanName: 'Bean名称',
       methodName: '方法名称',
+      serviceId: '服务名',
+      path: '请求路径',
+      requestMethod: '请求类型',
+      contentType: '响应类型',
       params: '方法参数',
+      alarmMail: '告警邮箱',
       cronExpression: 'Cron表达式',
       status: '状态',
       createTime: '创建时间',
@@ -139,7 +145,9 @@ export default {
       run: '运行一次',
       fail: '失败',
       success: '成功',
-      normal: '正常'
+      normal: '正常',
+      local: '本地方法',
+      remote: '远程服务'
     },
     eximport: {
       field1: '字段1',

@@ -1,8 +1,14 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="queryParams.beanName" :placeholder="$t('table.job.beanName')" class="filter-item search-item" />
-      <el-input v-model="queryParams.methodName" :placeholder="$t('table.job.methodName')" class="filter-item search-item" />
+      <el-select v-model="jobType" placeholder="" value="" class="filter-item search-item">
+          <el-option label="远程服务" value="1" />
+          <el-option label="本地方法" value="0" />
+      </el-select>
+      <el-input v-if="jobType==='0'" v-model="queryParams.beanName" :placeholder="$t('table.job.beanName')" class="filter-item search-item" />
+      <el-input v-if="jobType==='0'" v-model="queryParams.methodName" :placeholder="$t('table.job.methodName')" class="filter-item search-item" />
+      <el-input v-if="jobType==='1'" v-model="queryParams.serviceId" :placeholder="$t('table.job.serviceId')" class="filter-item search-item" />
+      <el-input v-if="jobType==='1'" v-model="queryParams.path" :placeholder="$t('table.job.path')" class="filter-item search-item" />
       <el-button class="filter-item" type="primary" @click="search">
         {{ $t('table.search') }}
       </el-button>
@@ -35,6 +41,20 @@
       @sort-change="sortChange"
     >
       <el-table-column type="selection" align="center" width="40px" />
+      <el-table-column
+        :label="$t('table.job.jobType')"
+        prop="jobType"
+        :show-overflow-tooltip="true"
+        :filters="[{ text: $t('table.job.remote'), value: '1' }, { text: $t('table.job.local'), value: '0' }]"
+        :filter-method="filterStatus"
+        align="center"
+      >
+        <template slot-scope="{row}">
+          <el-tag :type="row.jobType | statusFilter">
+            {{ row.jobType === '1' ? $t('table.job.remote'): $t('table.job.local') }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('table.job.beanName')" prop="beanName" :show-overflow-tooltip="true" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.beanName }}</span>
@@ -45,9 +65,34 @@
           <span>{{ scope.row.methodName }}</span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('table.job.serviceId')" prop="serviceId" :show-overflow-tooltip="true" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.serviceId }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.job.path')" prop="path" :show-overflow-tooltip="true" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.path }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.job.requestMethod')" prop="requestMethod" :show-overflow-tooltip="true" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.requestMethod }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.job.contentType')" prop="contentType" :show-overflow-tooltip="true" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.contentType }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('table.job.params')" prop="params" :show-overflow-tooltip="true" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.params }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.job.alarmMail')" prop="alarmMail" :show-overflow-tooltip="true" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.alarmMail }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.job.cronExpression')" prop="cronExpression" :show-overflow-tooltip="true" align="center">
@@ -131,7 +176,8 @@ export default {
       pagination: {
         size: 10,
         num: 1
-      }
+      },
+      jobType: '0'
     }
   },
   mounted() {

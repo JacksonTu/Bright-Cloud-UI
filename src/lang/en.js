@@ -122,9 +122,15 @@ export default {
       }
     },
     job: {
+      jobType: 'jobType',
       beanName: 'BeanName',
       methodName: 'MethodName',
-      params: 'Params',
+      serviceId: 'serviceId',
+      path: 'path',
+      requestMethod: 'requestMethod',
+      contentType: 'contentType',
+      params: 'params',
+      alarmMail: 'alarmMail',
       cronExpression: 'CronExpression',
       status: 'Status',
       createTime: 'CreateTime',
@@ -139,7 +145,9 @@ export default {
       run: 'Run once',
       fail: 'Fail',
       success: 'Success',
-      normal: 'Normal'
+      normal: 'Normal',
+      local: 'Local Method',
+      remote: 'Remote Service'
     },
     eximport: {
       field1: 'Field 1',
