@@ -70,14 +70,6 @@ export default {
           description: 'Admin，基于SBA的微服务监控中心',
           c: '#1890ff',
           bgc: 'rgba(236,251,252,0.3)'
-        },
-        {
-          icon: 'tx.svg',
-          name: 'Tx面板',
-          url: pages.txUrl,
-          description: 'Tx-Manager，分布式事务管理中心',
-          c: '#1890ff',
-          bgc: 'rgba(236,251,252,0.3)'
         }
       ]
     }

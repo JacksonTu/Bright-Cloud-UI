@@ -9,16 +9,14 @@ module.exports = {
     // Bright-Admin 控制台地址
     springBootAdminUrl: 'http://localhost:8006/login',
     // kibana 控制台地址
-    kibanaUrl: 'http://localhost:5601',
+    kibanaUrl: 'http://localhost:9400',
     // nacos 控制台地址
-    nacosUrl: 'http://localhost:8001/nacos',
+    nacosUrl: 'http://localhost:8848/nacos',
     // skywalking地址
-    skywalkingUrl: 'http://localhost:8080/',
+    skywalkingUrl: 'http://localhost:9080/',
     // 文档中心
     docUrl: 'http://localhost:8002/doc.html',
     // Granfana控制台
-    grafanaUrl: 'http://localhost:8404/',
-    // tx-manager控制台
-    txUrl: 'http://localhost:8501/admin/index.html#/login'
+    grafanaUrl: 'http://localhost:9070/'
   }
 }
