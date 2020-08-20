@@ -149,19 +149,14 @@ export default {
       local: 'Local Method',
       remote: 'Remote Service'
     },
-    eximport: {
-      field1: 'Field 1',
-      field2: 'Field 2',
-      field3: 'Field 3',
-      createTime: 'Import Time'
-    },
-    datapermissionTest: {
-      field1: 'Field 1',
-      field2: 'Field 2',
-      field3: 'Field 3',
-      field4: 'Field 4',
-      createTime: 'CreateTime',
-      tips: 'Data permission test, different users see different data'
+    omsItem: {
+      itemName: 'itemName',
+      itemCode: 'itemCode',
+      itemStock: 'itemStock',
+      purchaseTime: 'purchaseTime',
+      status: 'status',
+      createTime: 'createTime',
+      updateTime: 'updateTime'
     },
     routeUser: {
       tips: 'Gateway management user account list, permissions are divided into ordinary users (user) and administrative users (admin)',

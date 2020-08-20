@@ -149,19 +149,14 @@ export default {
       local: '本地方法',
       remote: '远程服务'
     },
-    eximport: {
-      field1: '字段1',
-      field2: '字段2',
-      field3: '字段3',
-      createTime: '导入时间'
-    },
-    datapermissionTest: {
-      field1: '字段1',
-      field2: '字段2',
-      field3: '字段3',
-      field4: '字段4',
+    omsItem: {
+      itemName: '商品名',
+      itemCode: '商品编号',
+      itemStock: '库存',
+      purchaseTime: '采购时间',
+      status: '状态',
       createTime: '创建时间',
-      tips: '数据权限测试，不同用户看到的数据不一样'
+      updateTime: '更新时间'
     },
     routeUser: {
       tips: '网关管理用户账号列表，权限分为普通用户（user）和管理用户（admin）',

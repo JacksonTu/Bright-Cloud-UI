@@ -204,7 +204,7 @@ export default {
     },
     delete(rateLimitRule) {
       this.loading = true
-      this.$delete(`system/gatewayRouteLimitRule`, { rateLimitRule }).then(() => {
+      this.$delete(`system/gatewayRouteLimitRule/${rateLimitRule}`).then(() => {
         this.$message({
           message: this.$t('tips.deleteSuccess'),
           type: 'success'

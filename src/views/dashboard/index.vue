@@ -215,9 +215,9 @@ export default {
     initIndexData: function() {
       this.$get('system/user/index').then((r) => {
         const data = r.data.data
-        this.todayIp = data.todayIp
-        this.totalVisit = data.totalVisitCount
-        this.todayVisit = data.todayVisitCount
+        this.todayIp = Number(data.todayIp)
+        this.totalVisit = Number(data.totalVisitCount)
+        this.todayVisit = Number(data.todayVisitCount)
         const tenVisitCount = []
         const dateArr = []
         for (let i = 10; i >= 0; i--) {

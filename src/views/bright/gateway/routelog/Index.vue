@@ -159,7 +159,7 @@ export default {
     },
     delete(routeLogs) {
       this.loading = true
-      this.$delete(`system/gatewayRouteLog`, { routeLogs }).then(() => {
+      this.$delete(`system/gatewayRouteLog/${routeLogs}`).then(() => {
         this.$message({
           message: this.$t('tips.deleteSuccess'),
           type: 'success'

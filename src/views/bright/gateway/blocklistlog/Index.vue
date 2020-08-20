@@ -159,7 +159,7 @@ export default {
     },
     delete(blockListLogs) {
       this.loading = true
-      this.$delete(`system/gatewayBlockListLog`, { blockListLogs }).then(() => {
+      this.$delete(`system/gatewayBlockListLog/${blockListLogs}`).then(() => {
         this.$message({
           message: this.$t('tips.deleteSuccess'),
           type: 'success'

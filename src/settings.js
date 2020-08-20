@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Bright-Cloud',
   // 获取令牌时，请求头信息(Basic Base64.encode(client_id:client_secret))
-  authorizationValue: 'Basic ZmViczoxMjM0NTY=',
+  authorizationValue: 'Basic YnJpZ2h0OjEyMzQ1Ng==',
   // 社交登录后台地址
   socialLoginUrl: 'http://localhost:8002/auth/social/login',
   // 请替换为您的实际地址

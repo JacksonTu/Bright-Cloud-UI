@@ -194,7 +194,7 @@ export default {
     },
     delete(clientIds) {
       this.loading = true
-      this.$delete(`system/gatewayDynamicRoute`, { clientIds }).then(() => {
+      this.$delete(`system/gatewayDynamicRoute/${clientIds}`).then(() => {
         this.$message({
           message: this.$t('tips.deleteSuccess'),
           type: 'success'

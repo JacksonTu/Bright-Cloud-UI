@@ -159,7 +159,7 @@ export default {
     },
     delete(rateLimitLogs) {
       this.loading = true
-      this.$delete(`system/gatewayRouteLimitRuleLog`, { rateLimitLogs }).then(() => {
+      this.$delete(`system/gatewayRouteLimitRuleLog/${rateLimitLogs}`).then(() => {
         this.$message({
           message: this.$t('tips.deleteSuccess'),
           type: 'success'

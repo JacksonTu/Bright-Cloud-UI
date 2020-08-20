@@ -52,19 +52,19 @@
           fit
           style="width: 100%;"
         >
-          <el-table-column label="字段1" prop="field1" :show-overflow-tooltip="true" align="center">
+          <el-table-column label="商品名" prop="itemName" :show-overflow-tooltip="true" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.field1 }}</span>
+              <span>{{ scope.row.itemName }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="字段2" prop="field2" :show-overflow-tooltip="true" align="center">
+          <el-table-column label="商品编码" prop="itemCode" :show-overflow-tooltip="true" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.field2 }}</span>
+              <span>{{ scope.row.itemCode }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="字段3" prop="field3" :show-overflow-tooltip="true" align="center">
+          <el-table-column label="库存" prop="itemStock" :show-overflow-tooltip="true" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.field3 }}</span>
+              <span>{{ scope.row.itemStock }}</span>
             </template>
           </el-table-column>
           <el-table-column label="导入时间" prop="createTime" :show-overflow-tooltip="true" align="center">

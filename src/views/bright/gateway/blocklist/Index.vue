@@ -205,7 +205,7 @@ export default {
     },
     delete(blockLists) {
       this.loading = true
-      this.$delete(`system/gatewayBlockList`, { blockLists }).then(() => {
+      this.$delete(`system/gatewayBlockList/${blockLists}`).then(() => {
         this.$message({
           message: this.$t('tips.deleteSuccess'),
           type: 'success'
