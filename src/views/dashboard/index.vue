@@ -9,7 +9,7 @@
             </div>
             <div class="user-info">
               <div class="random-message">
-                {{ welcomeMessage }}
+                {{ welcomeMessage }}<span style="margin-left: 10px"><a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=zTqfRGY6lCRexYwbc1lDpaM20_v_ca91&jump_from=webapi"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="Bright-Cloud交流群" title="Bright-Cloud交流群"></a></span>
               </div>
               <div class="user-dept">
                 <span>{{ user.deptName ? user.deptName : $t('common.noDept') }}</span> | <span>{{ user.roleName ? user.roleName : $t('common.noRole') }}</span>
