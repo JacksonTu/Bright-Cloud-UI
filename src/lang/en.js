@@ -337,7 +337,7 @@ export default {
   common: {
     system: 'Microservice Auth System',
     desc: {
-      a: 'Based on Spring Boot 2.3.2 & Spring Cloud Hoxton.SR7',
+      a: 'Based on Spring Boot 2.3.2 & Spring Cloud Hoxton.SR7 & Duddo',
       b: 'Use Spring Cloud OAuth2 Unified Authentication',
       c: 'Authentication server resource server separation, easy to expand',
       d: 'Front-end separation architecture for increased efficiency',
