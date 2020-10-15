@@ -71,19 +71,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="$t('table.notice.userType')" prop="userIds">
-            <el-popover
-              placement="bottom"
-              width="400"
-              trigger="click"
-            >
-              <el-table :data="gridData">
-                <el-table-column width="150" property="date" label="日期" />
-                <el-table-column width="100" property="name" label="姓名" />
-                <el-table-column width="300" property="address" label="地址" />
-              </el-table>
-              <el-input slot="reference" v-model="notice.title" />
-            </el-popover>
+          <el-form-item v-if="notice.msgType === 'USER' " :label="$t('table.notice.userType')" prop="userIds">
+            <treeselect v-model="notice.userIdArray" :multiple="true" :disable-branch-nodes="true" :show-count="true" :placeholder="$t('table.notice.userType')" :options="users" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <el-form-item :label="$t('table.notice.msgContent')" prop="msgContent">
+            <Tinymce ref="editor" v-model="notice.msgContent" :height="400" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -99,8 +95,12 @@
   </el-dialog>
 </template>
 <script>
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import Tinymce from '@/components/Tinymce'
 export default {
   name: 'NoticeEdit',
+  components: { Treeselect, Tinymce },
   props: {
     dialogVisible: {
       type: Boolean,
@@ -146,71 +146,7 @@ export default {
           { required: true, message: this.$t('rules.require'), trigger: 'blur' }
         ]
       },
-      props: { multiple: true },
-      options: [{
-        value: 1,
-        label: '东南',
-        children: [{
-          value: 2,
-          label: '上海',
-          children: [
-            { value: 3, label: '普陀' },
-            { value: 4, label: '黄埔' },
-            { value: 5, label: '徐汇' }
-          ]
-        }, {
-          value: 7,
-          label: '江苏',
-          children: [
-            { value: 8, label: '南京' },
-            { value: 9, label: '苏州' },
-            { value: 10, label: '无锡' }
-          ]
-        }, {
-          value: 12,
-          label: '浙江',
-          children: [
-            { value: 13, label: '杭州' },
-            { value: 14, label: '宁波' },
-            { value: 15, label: '嘉兴' }
-          ]
-        }]
-      }, {
-        value: 17,
-        label: '西北',
-        children: [{
-          value: 18,
-          label: '陕西',
-          children: [
-            { value: 19, label: '西安' },
-            { value: 20, label: '延安' }
-          ]
-        }, {
-          value: 21,
-          label: '新疆维吾尔族自治区',
-          children: [
-            { value: 22, label: '乌鲁木齐' },
-            { value: 23, label: '克拉玛依' }
-          ]
-        }]
-      }],
-      gridData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }]
+      users: []
     }
   },
   computed: {
@@ -225,11 +161,14 @@ export default {
     }
   },
   mounted() {
+    this.initUser()
     window.onresize = () => {
       return (() => {
         this.width = this.initWidth()
       })()
     }
+  },
+  activated() {
   },
   methods: {
     initWidth() {
@@ -255,19 +194,45 @@ export default {
         msgContent: '',
         sendStatus: '0',
         userIds: '',
-        delFlag: '0'
+        delFlag: '0',
+        userIdArray: []
       }
     },
+    initUser() {
+      this.$get('system/user/treeUser').then((r) => {
+        this.users = r.data.data.rows
+      }).catch((error) => {
+        console.error(error)
+        this.$message({
+          message: this.$t('tips.getDataFail'),
+          type: 'error'
+        })
+      })
+    },
     setNotice(val) {
+      // key遍历
       Object.keys(this.notice).map(key => {
-        console.log('key', key)
         this.notice[key] = val[key]
       })
-      console.log('notice', this.notice)
+      // 字符串转数组
+      if (this.notice.userIds) {
+        this.notice.userIdArray = this.notice.userIds.split(',')
+      }
     },
     submitForm() {
       this.$refs.form.validate((valid) => {
         if (valid) {
+          if (this.notice.msgType === 'USER' && !this.notice.userIdArray) {
+            this.$message({
+              message: '指定用户不能为空',
+              type: 'warning'
+            })
+            return
+          }
+          // 数组转字符串
+          if (this.notice.userIdArray) {
+            this.notice.userIds = this.notice.userIdArray.join(',')
+          }
           this.buttonLoading = true
           if (this.type === 'add') {
             // create
@@ -304,6 +269,7 @@ export default {
       this.$refs.form.clearValidate()
       this.$refs.form.resetFields()
       this.notice = this.initNotice()
+      this.users = this.initUser()
     }
   }
 }

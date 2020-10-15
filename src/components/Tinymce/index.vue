@@ -71,9 +71,6 @@ export default {
     }
   },
   computed: {
-    language() {
-      return this.languageTypeList[this.$store.getters.language]
-    },
     containerWidth() {
       const width = this.width
       if (/^[\d]+(\.[\d]+)?$/.test(width)) { // matches `100`, `'100'`
@@ -84,14 +81,18 @@ export default {
   },
   watch: {
     value(val) {
+      console.log('watch hasChange', this.hasChange)
+      console.log('watch hasInit', this.hasInit)
       if (!this.hasChange && this.hasInit) {
+        console.log('到这来')
         this.$nextTick(() =>
           window.tinymce.get(this.tinymceId).setContent(val || ''))
       }
-    },
-    language() {
-      this.destroyTinymce()
-      this.$nextTick(() => this.initTinymce())
+      console.log('watch2 hasChange', this.hasChange)
+      console.log('watch2 hasInit', this.hasInit)
+      if (this.hasChange) {
+        this.hasChange = false
+      }
     }
   },
   mounted() {
@@ -122,8 +123,8 @@ export default {
     initTinymce() {
       const _this = this
       window.tinymce.init({
-        language: this.language,
         selector: `#${this.tinymceId}`,
+        language: this.languageTypeList['zh'],
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,
@@ -154,7 +155,11 @@ export default {
           editor.on('FullscreenStateChanged', (e) => {
             _this.fullscreen = e.state
           })
-        }
+        },
+        // it will try to keep these URLs intact
+        // https://www.tiny.cloud/docs-3x/reference/configuration/Configuration3x@convert_urls/
+        // https://stackoverflow.com/questions/5196205/disable-tinymce-absolute-to-relative-url-conversions
+        convert_urls: false
         // 整合七牛上传
         // images_dataimg_filter(img) {
         //   setTimeout(() => {
@@ -189,6 +194,8 @@ export default {
         //   });
         // },
       })
+      console.log('init hasChange', this.hasChange)
+      console.log('init hasInit', this.hasInit)
     },
     destroyTinymce() {
       const tinymce = window.tinymce.get(this.tinymceId)
@@ -207,37 +214,43 @@ export default {
       window.tinymce.get(this.tinymceId).getContent()
     },
     imageSuccessCBK(arr) {
-      const _this = this
-      arr.forEach(v => {
-        window.tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`)
-      })
+      arr.forEach(v => window.tinymce.get(this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`))
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .tinymce-container {
   position: relative;
   line-height: normal;
 }
-.tinymce-container>>>.mce-fullscreen {
-  z-index: 10000;
+
+.tinymce-container {
+  ::v-deep {
+    .mce-fullscreen {
+      z-index: 10000;
+    }
+  }
 }
+
 .tinymce-textarea {
   visibility: hidden;
   z-index: -1;
 }
+
 .editor-custom-btn-container {
   position: absolute;
   right: 4px;
   top: 4px;
   /*z-index: 2005;*/
 }
+
 .fullscreen .editor-custom-btn-container {
   z-index: 10000;
   position: fixed;
 }
+
 .editor-upload-btn {
   display: inline-block;
 }
