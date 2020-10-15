@@ -241,6 +241,31 @@ export default {
       title: 'Bright Gateway Certification',
       login: 'Login'
     },
+    notice: {
+      title: 'title',
+      msgCategory: 'msgCategory',
+      createUser: 'createUser',
+      priority: 'priority',
+      msgType: 'msgType',
+      sendStatus: 'sendStatus',
+      sendTime: 'sendTime',
+      cancelTime: 'cancelTime',
+      msgCategory1: 'Notice',
+      msgCategory2: 'Message',
+      priorityH: 'H',
+      priorityM: 'M',
+      priorityL: 'L',
+      msgTypeUser: 'USER',
+      msgTypeAll: 'ALL',
+      sendStatus0: 'UNRELEASED',
+      sendStatus1: 'RELEASE',
+      sendStatus2: 'REVOKE',
+      startTime: 'startTime',
+      endTime: 'endTime',
+      msgAbstract: 'Abstract',
+      msgContent: 'Content',
+      userType: 'userType'
+    },
     refresh: 'Refresh',
     operation: 'Operation',
     search: 'Search',
@@ -311,7 +336,9 @@ export default {
     createTips: 'Please fill in the relevant information in the form',
     cronInvalid: 'Cron expression is invalid',
     executeSuccess: 'Success',
-    executeFail: 'Fail'
+    executeFail: 'Fail',
+    release: 'Release',
+    revoke: 'Revoke'
   },
   rules: {
     require: 'Can\'t be empty',

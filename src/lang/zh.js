@@ -241,6 +241,31 @@ export default {
       title: 'Bright 网关管理认证',
       login: '认证'
     },
+    notice: {
+      title: '标题',
+      msgCategory: '消息类型',
+      createUser: '发布人',
+      priority: '优先级',
+      msgType: '通告对象',
+      sendStatus: '发布状态',
+      sendTime: '发布时间',
+      cancelTime: '撤销时间',
+      msgCategory1: '通知公告',
+      msgCategory2: '系统消息',
+      priorityH: '高',
+      priorityM: '中',
+      priorityL: '低',
+      msgTypeUser: '指定用户',
+      msgTypeAll: '全体用户',
+      sendStatus0: '未发布',
+      sendStatus1: '已发布',
+      sendStatus2: '已撤销',
+      startTime: '开始时间',
+      endTime: '结束时间',
+      msgAbstract: '摘要',
+      msgContent: '内容',
+      userType: '指定用户'
+    },
     refresh: '刷新',
     operation: '操作',
     search: '搜索',
@@ -311,7 +336,9 @@ export default {
     createTips: '请在表单中填写相关信息',
     cronInvalid: 'Cron表达式不合法',
     executeSuccess: '成功',
-    executeFail: '失败'
+    executeFail: '失败',
+    release: '发布',
+    revoke: '撤销'
   },
   rules: {
     require: '不能为空',
@@ -338,7 +365,7 @@ export default {
   common: {
     system: '分布式微服务权限系统',
     desc: {
-      a: '基于Spring Boot 2.3.2 & Spring Cloud Hoxton.SR7 & Dubbo',
+      a: '基于Spring Boot 2.3.4 & Spring Cloud Hoxton.SR8 & Dubbo',
       b: '使用Spring Cloud OAuth2统一认证',
       c: '认证服务器资源服务器分离，方便拓展',
       d: '前后端分离架构，提高软件开发效率',

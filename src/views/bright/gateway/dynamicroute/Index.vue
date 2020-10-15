@@ -87,7 +87,7 @@
         <template slot-scope="{row}">
           <i v-hasPermission="['gatewayDynamicRoute:update']" class="el-icon-setting table-operation" style="color: #2db7f5;" @click="edit(row)" />
           <i v-hasPermission="['gatewayDynamicRoute:delete']" class="el-icon-delete table-operation" style="color: #f50;" @click="singleDelete(row)" />
-          <el-link v-has-no-permission="['client:decrypt','gatewayDynamicRoute:update','gatewayDynamicRoute:delete']" class="no-perm">
+          <el-link v-has-no-permission="['gatewayDynamicRoute:update','gatewayDynamicRoute:delete']" class="no-perm">
             {{ $t('tips.noPermission') }}
           </el-link>
         </template>
@@ -179,11 +179,11 @@ export default {
         cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
       }).then(() => {
-        const clientIds = []
+        const ids = []
         this.selection.forEach((c) => {
-          clientIds.push(c.id)
+          ids.push(c.id)
         })
-        this.delete(clientIds)
+        this.delete(ids)
       }).catch(() => {
         this.clearSelections()
       })
@@ -192,9 +192,9 @@ export default {
       this.$refs.table.toggleRowSelection(row, true)
       this.batchDelete()
     },
-    delete(clientIds) {
+    delete(ids) {
       this.loading = true
-      this.$delete(`system/gatewayDynamicRoute/${clientIds}`).then(() => {
+      this.$delete(`system/gatewayDynamicRoute/${ids}`).then(() => {
         this.$message({
           message: this.$t('tips.deleteSuccess'),
           type: 'success'
