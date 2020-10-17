@@ -88,7 +88,7 @@
           <i v-if="row.sendStatus ==='0'" v-hasPermission="['notice:release']" class="el-icon-s-promotion table-operation" style="color: #2db7f5;" @click="releaseData(row)" />
           <i v-if="row.sendStatus ==='1'" v-hasPermission="['notice:revoke']" class="el-icon-s-release table-operation" style="color: #2db7f5;" @click="revokeData(row)" />
           <i v-if="row.sendStatus !=='1'" v-hasPermission="['notice:delete']" class="el-icon-delete table-operation" style="color: #f50;" @click="singleDelete(row)" />
-          <el-link v-has-no-permission="['notice:update','notice:delete']" class="no-perm">
+          <el-link v-has-no-permission="['notice:update','notice:delete','notice:release','notice:revoke']" class="no-perm">
             {{ $t('tips.noPermission') }}
           </el-link>
         </template>
@@ -144,16 +144,6 @@ export default {
     this.fetch()
   },
   methods: {
-    transApprove(v) {
-      switch (v) {
-        case 0:
-          return 'false'
-        case 1:
-          return 'true'
-        default:
-          return ''
-      }
-    },
     editSuccess() {
       this.search()
     },

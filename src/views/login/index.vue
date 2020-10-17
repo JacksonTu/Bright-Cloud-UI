@@ -136,7 +136,7 @@
       </span>
       <el-dropdown class="login-type" placement="top-end">
         <span class="el-dropdown-link">
-          <el-link type="primary">{{ $t('login.ortherLoginType') }}</el-link>
+          <el-link type="primary">{{ $t('login.otherLoginType') }}</el-link>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item :disabled="login.type === 'up'" @click.native="login.type = 'up'">{{ $t('login.type.up') }}</el-dropdown-item>
