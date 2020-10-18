@@ -15,7 +15,7 @@
         </el-select>
         <el-alert
           v-if="job.jobType ==='1'"
-          title="远程定时任务自动扫描各子项目中请求前缀为‘/task’的请求类型为‘GET’的请求."
+          title="远程定时任务使用Restful API接口，自动扫描各子项目中请求前缀为‘/task’的请求类型为‘GET’的请求."
           type="warning"
           :closable="false"
         />
@@ -45,7 +45,7 @@
         <el-input v-model="job.params" />
         <el-alert
           v-if="job.jobType ==='1'"
-          title="远程定时任务使用restful api接口，多个参数用逗号隔开，例： 远程请求：‘http://localhost:8000/task/test/{id}/{msg}’,请求参数：‘1,测试’."
+          title="多个参数用逗号隔开，例: 远程请求：‘http://localhost:8000/task/test/{id}/{msg}’,请求参数：‘1,测试’."
           type="warning"
           :closable="false"
         />
