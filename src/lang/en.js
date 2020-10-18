@@ -147,7 +147,9 @@ export default {
       success: 'Success',
       normal: 'Normal',
       local: 'Local Method',
-      remote: 'Remote Service'
+      remote: 'Remote Service',
+      remotePath: 'Remote Path',
+      getApiDataFail: 'Cannot select service name, please choose again'
     },
     omsItem: {
       itemName: 'itemName',

@@ -147,7 +147,9 @@ export default {
       success: '成功',
       normal: '正常',
       local: '本地方法',
-      remote: '远程服务'
+      remote: '远程服务',
+      remotePath: '远程路径',
+      getApiDataFail: '不能选择服务名,请重新选择'
     },
     omsItem: {
       itemName: '商品名',

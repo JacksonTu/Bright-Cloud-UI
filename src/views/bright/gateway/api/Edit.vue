@@ -9,7 +9,7 @@
   >
     <el-form ref="form" :model="api" :rules="rules" label-position="right" label-width="165px">
       <el-form-item :label="$t('table.api.serviceId')" prop="serviceId">
-        <el-input v-model="api.serviceId" :readonly="!api.apiId ? false : 'readonly'" />
+        <treeselect v-model="api.serviceId" :multiple="false" :disable-branch-nodes="true" :show-count="true" :placeholder="$t('table.notice.userType')" :options="routes" :disabled="!api.apiId ? false : true" />
       </el-form-item>
       <el-form-item :label="$t('table.api.apiName')" prop="apiName">
         <el-input v-model="api.apiName" :readonly="!api.apiId ? false : 'readonly'" />
@@ -49,9 +49,11 @@
   </el-dialog>
 </template>
 <script>
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
   name: 'ApiEdit',
-  components: {},
+  components: { Treeselect },
   props: {
     dialogVisible: {
       type: Boolean,
@@ -72,6 +74,7 @@ export default {
       buttonLoading: false,
       width: this.initWidth(),
       api: this.initApi(),
+      routes: [],
       rules: {
         serviceId: [
           { required: true, message: this.$t('rules.require'), trigger: 'blur' }
@@ -100,6 +103,7 @@ export default {
     }
   },
   mounted() {
+    this.initRoute()
     window.onresize = () => {
       return (() => {
         this.width = this.initWidth()
@@ -119,6 +123,17 @@ export default {
         return '800px'
       }
     },
+    initRoute() {
+      this.$get('system/api/treeServiceId').then((r) => {
+        this.routes = r.data.data.rows
+      }).catch((error) => {
+        console.error(error)
+        this.$message({
+          message: this.$t('tips.getDataFail'),
+          type: 'error'
+        })
+      })
+    },
     initApi() {
       return {
         apiId: null,
@@ -136,7 +151,6 @@ export default {
       }
     },
     setApi(val) {
-      console.log('val', val)
       // key遍历
       Object.keys(this.api).map(key => {
         if (key === 'status') {
@@ -149,7 +163,6 @@ export default {
           this.api[key] = val[key]
         }
       })
-      console.log('api', this.api)
     },
     submitForm() {
       this.$refs.form.validate((valid) => {
@@ -190,6 +203,7 @@ export default {
       this.$refs.form.clearValidate()
       this.$refs.form.resetFields()
       this.api = this.initApi()
+      this.routes = this.initRoute()
     }
   }
 }

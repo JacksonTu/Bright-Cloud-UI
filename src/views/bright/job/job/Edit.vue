@@ -13,6 +13,12 @@
           <el-option label="远程服务" value="1" />
           <el-option label="本地方法" value="0" />
         </el-select>
+        <el-alert
+          v-if="job.jobType ==='1'"
+          title="远程定时任务自动扫描各子项目中请求前缀为‘/task’的请求类型为‘GET’的请求."
+          type="warning"
+          :closable="false"
+        />
       </el-form-item>
       <el-form-item v-if="job.jobType ==='0'" :label="$t('table.job.beanName')" prop="beanName">
         <el-input v-model="job.beanName" />
@@ -20,20 +26,29 @@
       <el-form-item v-if="job.jobType ==='0'" :label="$t('table.job.methodName')" prop="methodName">
         <el-input v-model="job.methodName" />
       </el-form-item>
+      <el-form-item v-if="job.jobType ==='1'" :label="$t('table.job.remotePath')" prop="apiId">
+        <treeselect v-model="job.apiId" :multiple="false" :disable-branch-nodes="true" :show-count="true" :options="apis" @select="apiChange" />
+      </el-form-item>
       <el-form-item v-if="job.jobType ==='1'" :label="$t('table.job.serviceId')" prop="serviceId">
-        <el-input v-model="job.serviceId" />
+        <el-input v-model="job.serviceId" :disabled="true" />
       </el-form-item>
       <el-form-item v-if="job.jobType ==='1'" :label="$t('table.job.path')" prop="path">
-        <el-input v-model="job.path" />
+        <el-input v-model="job.path" :disabled="true" />
       </el-form-item>
       <el-form-item v-if="job.jobType ==='1'" :label="$t('table.job.requestMethod')" prop="requestMethod">
-        <el-input v-model="job.requestMethod" />
+        <el-input v-model="job.requestMethod" :disabled="true" />
       </el-form-item>
-      <el-form-item  v-if="job.jobType ==='1'" :label="$t('table.job.contentType')" prop="contentType">
-        <el-input v-model="job.contentType" />
+      <el-form-item v-if="job.jobType ==='1'" :label="$t('table.job.contentType')" prop="contentType">
+        <el-input v-model="job.contentType" :disabled="true" />
       </el-form-item>
-      <el-form-item v-if="job.jobType ==='0'" :label="$t('table.job.params')" prop="params">
+      <el-form-item :label="$t('table.job.params')" prop="params">
         <el-input v-model="job.params" />
+        <el-alert
+          v-if="job.jobType ==='1'"
+          title="远程定时任务使用restful api接口，多个参数用逗号隔开，例： 远程请求：‘http://localhost:8000/task/test/{id}/{msg}’,请求参数：‘1,测试’."
+          type="warning"
+          :closable="false"
+        />
       </el-form-item>
       <el-form-item :label="$t('table.job.alarmMail')" prop="alarmMail">
         <el-input v-model="job.alarmMail" />
@@ -56,10 +71,12 @@
   </el-dialog>
 </template>
 <script>
+import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   name: 'JobEdit',
+  components: { Treeselect },
   props: {
     dialogVisible: {
       type: Boolean,
@@ -76,6 +93,8 @@ export default {
       buttonLoading: false,
       screenWidth: 0,
       width: this.initWidth(),
+      apis: [],
+      queryParams: {},
       rules: {
         beanName: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
         methodName: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
@@ -114,6 +133,7 @@ export default {
     }
   },
   mounted() {
+    this.initApi()
     window.onresize = () => {
       return (() => {
         this.width = this.initWidth()
@@ -121,6 +141,55 @@ export default {
     }
   },
   methods: {
+    initWidth() {
+      this.screenWidth = document.body.clientWidth
+      if (this.screenWidth < 991) {
+        return '90%'
+      } else if (this.screenWidth < 1400) {
+        return '45%'
+      } else {
+        return '700px'
+      }
+    },
+    initApi() {
+      this.queryParams.prefix = '/task'
+      this.$get('system/api/treeApi', {
+        ...this.queryParams
+      }).then((r) => {
+        this.apis = r.data.data.rows
+      }).catch((error) => {
+        console.error(error)
+        this.$message({
+          message: this.$t('tips.getDataFail'),
+          type: 'error'
+        })
+      })
+    },
+    apiChange(node) {
+      console.log('node', node)
+      if (node.parentId === '0') {
+        this.$message({
+          message: this.$t('table.job.getApiDataFail'),
+          type: 'error'
+        })
+      } else {
+        this.job.serviceId = node.serviceId
+        this.job.path = node.path
+        this.job.requestMethod = node.requestMethod
+        this.job.contentType = node.contentType === '' ? 'application/json' : node.contentType
+      }
+    },
+    getApiId(job) {
+      for (const item of this.apis) {
+        if (item.hasChildren === true) {
+          for (const item2 of item.children) {
+            if (item2.serviceId === job.serviceId && item2.path === job.path && item2.requestMethod === job.requestMethod) {
+              this.job.apiId = item2.id
+            }
+          }
+        }
+      }
+    },
     initJob() {
       return {
         jobId: null,
@@ -134,21 +203,15 @@ export default {
         path: '',
         requestMethod: '',
         contentType: '',
-        alarmMail: ''
-      }
-    },
-    initWidth() {
-      this.screenWidth = document.body.clientWidth
-      if (this.screenWidth < 991) {
-        return '90%'
-      } else if (this.screenWidth < 1400) {
-        return '45%'
-      } else {
-        return '700px'
+        alarmMail: '',
+        apiId: null
       }
     },
     setJob(val) {
       this.job = { ...val }
+      if (this.job.jobType === '1') {
+        this.getApiId(this.job)
+      }
     },
     close() {
       this.$emit('close')
@@ -195,6 +258,7 @@ export default {
       this.$refs.form.clearValidate()
       this.$refs.form.resetFields()
       this.job = this.initJob()
+      this.apis = this.initApi()
     }
   }
 }

@@ -7,8 +7,8 @@
       :closable="false"
     />
     <div class="filter-container">
-      <el-input v-model="queryParams.path" :placeholder="$t('table.api.path')" class="filter-item search-item" />
       <el-input v-model="queryParams.apiName" :placeholder="$t('table.api.apiName')" class="filter-item search-item" />
+      <el-input v-model="queryParams.path" :placeholder="$t('table.api.path')" class="filter-item search-item" />
       <el-input v-model="queryParams.serviceId" :placeholder="$t('table.api.serviceId')" class="filter-item search-item" />
       <el-button class="filter-item" type="primary" @click="search">
         {{ $t('table.search') }}
