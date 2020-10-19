@@ -170,9 +170,7 @@ export default {
     releaseData(row) {
       this.$get(`msg/notice/release/${row.id}`).then((r) => {
         this.$message({
-          showClose: true,
           message: this.$t('tips.release') + r.data.data,
-          duration: 0,
           type: 'success'
         })
         this.search()
@@ -181,9 +179,7 @@ export default {
     revokeData(row) {
       this.$get(`msg/notice/revoke/${row.id}`).then((r) => {
         this.$message({
-          showClose: true,
           message: this.$t('tips.revoke') + r.data.data,
-          duration: 0,
           type: 'success'
         })
         this.search()

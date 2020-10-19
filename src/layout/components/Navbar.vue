@@ -7,6 +7,7 @@
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
+        <notice id="header-notice" class="right-menu-item" />
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
         <lang-select class="right-menu-item hover-effect" />
       </template>
@@ -52,6 +53,7 @@ import LangSelect from '@/components/LangSelect'
 import db from '@/utils/localstorage'
 import Screenfull from '@/components/Screenfull'
 import Search from '@/components/HeaderSearch'
+import Notice from '@/components/HeaderNotice/Index'
 
 export default {
   components: {
@@ -59,7 +61,8 @@ export default {
     Hamburger,
     LangSelect,
     Screenfull,
-    Search
+    Search,
+    Notice
   },
   computed: {
     sidebar() {

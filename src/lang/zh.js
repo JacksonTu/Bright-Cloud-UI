@@ -266,7 +266,10 @@ export default {
       endTime: '结束时间',
       msgAbstract: '摘要',
       msgContent: '内容',
-      userType: '指定用户'
+      userType: '指定用户',
+      readFlag: '阅读状态',
+      readFlag0: '未读',
+      readFlag1: '已读'
     },
     api: {
       apiCode: '接口编码',
@@ -302,7 +305,8 @@ export default {
     templateDownload: '模板下载',
     delete: '删除',
     resetPassword: '密码重置',
-    openInNewPage: '新页面打开'
+    openInNewPage: '新页面打开',
+    readAll: '一键已读'
   },
   tagsView: {
     refresh: '刷新当前',

@@ -266,7 +266,10 @@ export default {
       endTime: 'endTime',
       msgAbstract: 'Abstract',
       msgContent: 'Content',
-      userType: 'userType'
+      userType: 'userType',
+      readFlag: 'readFlag',
+      readFlag0: 'Unread',
+      readFlag1: 'Read'
     },
     api: {
       apiCode: 'apiCode',
@@ -302,7 +305,8 @@ export default {
     templateDownload: 'Template Download',
     delete: 'Delete',
     resetPassword: 'RestPassword',
-    openInNewPage: 'New Page'
+    openInNewPage: 'New Page',
+    readAll: 'ReadAll'
   },
   tagsView: {
     refresh: 'Refresh',
