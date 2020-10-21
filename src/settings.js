@@ -17,6 +17,8 @@ module.exports = {
     // 文档中心
     docUrl: 'http://localhost:8002/doc.html',
     // Granfana控制台
-    grafanaUrl: 'http://localhost:9070/'
+    grafanaUrl: 'http://localhost:9070/',
+    // 消息推送 websocket
+    msgWsUrl: 'http://localhost:8004/'
   }
 }

@@ -87,6 +87,7 @@
 <script>
 import ShowNotice from './ShowNotice'
 import ShowMoreNotice from './ShowMoreNotice'
+import { pages } from '@/settings'
 export default {
   name: 'HeaderNotice',
   components: {
@@ -191,7 +192,7 @@ export default {
     initWebSocket: function() {
       // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
       const userId = this.$store.state.account.user.userId
-      const baseUrl = 'http://localhost:8004'
+      const baseUrl = pages.msgWsUrl
       const url = baseUrl.replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId
       this.msgWebSocket = new WebSocket(url)
       this.msgWebSocket.onopen = this.websocketOnopen
