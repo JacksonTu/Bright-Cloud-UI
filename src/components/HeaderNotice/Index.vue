@@ -209,19 +209,23 @@ export default {
     },
     websocketOnmessage: function(e) {
       console.log('接收消息', e.data)
-      const data = eval('(' + e.data + ')') // 解析对象
+      const data = JSON.parse(e.data)
       if (data.cmd === 'topic') {
         // 系统通知
         this.loadData()
+        this.$refs.viewMore.getDataList()
       } else if (data.cmd === 'user') {
         // 用户消息
         this.loadData()
+        this.$refs.viewMore.getDataList()
       }
-      this.$notify({
-        title: data.msgTitle,
-        message: data.msgTxt,
-        position: 'bottom-right'
-      })
+      if (data.cmd === 'topic' || data.cmd === 'user') {
+        this.$notify({
+          title: data.msgTitle,
+          message: data.msgTxt,
+          position: 'bottom-right'
+        })
+      }
     },
     websocketOnclose: function(e) {
       console.log('connection closed', e)
