@@ -208,7 +208,7 @@ export default {
       this.reconnect()
     },
     websocketOnmessage: function(e) {
-      console.log('接收消息', e.data)
+      //console.log('接收消息', e.data)
       const data = JSON.parse(e.data)
       if (data.cmd === 'topic') {
         // 系统通知
