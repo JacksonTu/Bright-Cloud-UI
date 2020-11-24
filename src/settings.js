@@ -19,6 +19,6 @@ module.exports = {
     // Granfana控制台
     grafanaUrl: 'http://localhost:9070/',
     // 消息推送 websocket
-    msgWsUrl: 'http://59.110.223.220:8004'
+    wsUrl: 'http://localhost:8002/ws'
   }
 }

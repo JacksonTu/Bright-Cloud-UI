@@ -113,7 +113,8 @@ export default {
       msg2Title: '系统消息(0)',
       msg1Count: '0',
       msg2Count: '0',
-      msgWebSocket: null
+      msgWebSocket: null,
+      wsUrl: `${process.env.VUE_APP_BASE_API}ws`
     }
   },
   computed: {
@@ -192,8 +193,7 @@ export default {
     initWebSocket: function() {
       // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
       const userId = this.$store.state.account.user.userId
-      const baseUrl = pages.msgWsUrl
-      const url = baseUrl.replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId
+      const url = pages.wsUrl.replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId
       this.msgWebSocket = new WebSocket(url)
       this.msgWebSocket.onopen = this.websocketOnopen
       this.msgWebSocket.onerror = this.websocketOnerror
@@ -208,16 +208,14 @@ export default {
       this.reconnect()
     },
     websocketOnmessage: function(e) {
-      //console.log('接收消息', e.data)
+      // console.log('接收消息', e.data)
       const data = JSON.parse(e.data)
       if (data.cmd === 'topic') {
         // 系统通知
         this.loadData()
-        this.$refs.viewMore.getDataList()
       } else if (data.cmd === 'user') {
         // 用户消息
         this.loadData()
-        this.$refs.viewMore.getDataList()
       }
       if (data.cmd === 'topic' || data.cmd === 'user') {
         this.$notify({
