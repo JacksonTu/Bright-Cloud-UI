@@ -4,14 +4,14 @@ Bright-Cloud-UI是[Bright-Cloud]()微服务权限系统的前端项目，基于[
 
 ### 系统截图
 
-![1](images/1.png)
+![1](docs/images/1.png)
 
-![2](images/2.png)
+![2](docs/images/2.png)
 
-![3](images/3.png)
+![3](docs/images/3.png)
 
-![4](images/4.png)
+![4](docs/images/4.png)
 
-![5](images/5.png)
+![5](docs/images/5.png)
 
-![6](images/6.png)
+![6](docs/images/6.png)

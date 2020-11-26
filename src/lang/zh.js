@@ -394,7 +394,7 @@ export default {
   common: {
     system: '分布式微服务权限系统',
     desc: {
-      a: '基于Spring Boot 2.3.4 & Spring Cloud Hoxton.SR8 & Dubbo',
+      a: '基于Spring Boot 2.3.6 & Spring Cloud Hoxton.SR9 & Dubbo',
       b: '使用Spring Cloud OAuth2统一认证',
       c: '认证服务器资源服务器分离，方便拓展',
       d: '前后端分离架构，提高软件开发效率',

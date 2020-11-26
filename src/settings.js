@@ -6,19 +6,19 @@ module.exports = {
   socialLoginUrl: 'http://59.110.223.220:8002/auth/social/login',
   // 请替换为您的实际地址
   pages: {
+    // 消息推送 websocket
+    wsUrl: 'http://59.110.223.220:8002/ws',
     // Bright-Admin 控制台地址
     springBootAdminUrl: 'http://59.110.223.220:8006/login',
-    // kibana 控制台地址
-    kibanaUrl: 'http://localhost:9400',
-    // nacos 控制台地址
-    nacosUrl: 'http://106.13.130.94:8848/nacos',
-    // skywalking地址
-    skywalkingUrl: 'http://localhost:9080/',
     // 文档中心
     docUrl: 'http://59.110.223.220:8002/doc.html',
+    // nacos 控制台地址
+    nacosUrl: 'http://106.13.130.94:8848/nacos',
+    // kibana 控制台地址
+    kibanaUrl: 'http://localhost:9400',
+    // skywalking地址
+    skywalkingUrl: 'http://localhost:9080/',
     // Granfana控制台
-    grafanaUrl: 'http://localhost:9070/',
-    // 消息推送 websocket
-    wsUrl: 'http://localhost:8002/ws'
+    grafanaUrl: 'http://localhost:9070/'
   }
 }
