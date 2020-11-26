@@ -210,19 +210,18 @@ export default {
     websocketOnmessage: function(e) {
       // console.log('接收消息', e.data)
       const data = JSON.parse(e.data)
-      if (data.cmd === 'topic') {
-        // 系统通知
-        this.loadData()
-      } else if (data.cmd === 'user') {
-        // 用户消息
-        this.loadData()
-      }
       if (data.cmd === 'topic' || data.cmd === 'user') {
+        // 系统通知或者
+        this.loadData()
         this.$notify({
           title: data.msgTitle,
           message: data.msgTxt,
           position: 'bottom-right'
         })
+      }
+      if (data.cmd === 'revoke') {
+        // 撤销
+        this.loadData()
       }
     },
     websocketOnclose: function(e) {
