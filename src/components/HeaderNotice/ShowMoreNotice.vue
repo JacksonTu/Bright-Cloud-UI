@@ -204,7 +204,7 @@ export default {
       })
     },
     updateNoticeStatus(record) {
-      this.$get(`msg/notice/send/editByNoticeIdAndUserId/${record.id}`).then((r) => {
+      this.$get(`msg/notice/send/editByNoticeIdAndUserId/${record.noticeId}`).then((r) => {
         if (r.data.data === true) {
           this.fetch()
         }
