@@ -202,7 +202,9 @@ export default {
       nst: '不支持通配符',
       status: '规则状态',
       timeLimit: '时间限制',
-      timeRange: '时间范围'
+      timeRange: '时间范围',
+      params: '通配符替换',
+      alert: '通配符替换，如请求为“/task/getRouteLimitRule/{id}/{msg}，需替换为“/task/getRouteLimitRule/1/test”.'
     },
     rateLimitLog: {
       tips: '展示被限流规则拦截的请求日志',
@@ -224,9 +226,12 @@ export default {
       allTheTime: '所有时间',
       limitTo: '限制时间止',
       status: '规则状态',
+      nst: '不支持通配符',
       st: '支持通配符',
       timeLimit: '时间限制',
-      timeRange: '时间范围'
+      timeRange: '时间范围',
+      params: '通配符替换',
+      alert: '通配符替换，如请求为“/task/getRouteLimitRule/{id}/{msg}”，需替换为“/task/getRouteLimitRule/1/test”.'
     },
     blockLog: {
       tips: '展示被限流规则拦截的请求日志',

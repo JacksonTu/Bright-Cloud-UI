@@ -202,7 +202,9 @@ export default {
       nst: 'Wildcards are not supported',
       status: 'Status',
       timeLimit: 'Time Limit',
-      timeRange: 'Time Range'
+      timeRange: 'Time Range',
+      params: 'Wildcard substitution',
+      alert: 'Replace the wildcard. If the request is “/task/getRouteLimitRule/{id}/{msg}”, it should be replaced with "/task/getRouteLimitRule/1/test".'
     },
     rateLimitLog: {
       tips: 'Show request logs intercepted by traffic limiting rules',
@@ -224,9 +226,12 @@ export default {
       allTheTime: 'all the time',
       limitTo: 'Limit To',
       status: 'Status',
+      nst: 'Wildcards are not supported',
       st: 'Wildcard support',
       timeLimit: 'Time Limit',
-      timeRange: 'Time Range'
+      timeRange: 'Time Range',
+      params: 'Wildcard substitution',
+      alert: 'Replace the wildcard. If the request is “/task/getRouteLimitRule/{id}/{msg}”, it should be replaced with "/task/getRouteLimitRule/1/test".'
     },
     blockLog: {
       tips: 'Support wildcards to display request logs intercepted by blacklist rules. Requests that do not meet the rules will be intercepted. The interception records can be viewed through the blacklist logs.',

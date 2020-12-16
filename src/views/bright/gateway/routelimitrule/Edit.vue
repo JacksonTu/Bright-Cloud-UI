@@ -9,7 +9,7 @@
   >
     <el-form ref="form" :model="rateLimitRule" :rules="rules" label-position="right" label-width="129px">
       <el-form-item :label="$t('table.rateLimitRule.requestUri')" prop="requestUri">
-        <el-input  v-if="!rateLimitRule.id ? false:true" v-model="rateLimitRule.requestUri" :readonly="!rateLimitRule.id ? false : 'readonly'"/>
+        <el-input v-if="!rateLimitRule.id ? false:true" v-model="rateLimitRule.requestUri" :readonly="!rateLimitRule.id ? false : 'readonly'" />
         <treeselect
           v-if="rateLimitRule.id === null"
           v-model="rateLimitRule.apiId"
@@ -20,13 +20,22 @@
           @select="apiChange"
         />
       </el-form-item>
-      <el-form-item  v-if="!rateLimitRule.id ? false : true" :label="$t('table.rateLimitRule.requestMethod')" prop="requestMethod">
+      <el-form-item v-if="rateLimitRule.paramFlag == 1" :label="$t('table.rateLimitRule.params')" prop="requestUri">
+        <el-input v-model="rateLimitRule.params" :readonly="!rateLimitRule.id ? false : 'readonly'" />
+        <el-alert
+          :title="$t('table.rateLimitRule.alert')"
+          type="warning"
+          :closable="false"
+        />
+      </el-form-item>
+      <el-form-item v-if="!rateLimitRule.id ? false : true" :label="$t('table.rateLimitRule.requestMethod')" prop="requestMethod">
         <el-select
           v-model="rateLimitRule.requestMethod"
           :disabled="!rateLimitRule.id ? false : 'disabled'"
           placeholder=""
           style="width:100%"
-          value="">
+          value=""
+        >
           <el-option
             v-for="item in requestMethods"
             :key="item.id"
@@ -36,10 +45,10 @@
         </el-select>
       </el-form-item>
       <el-form-item :label="$t('table.rateLimitRule.count')" prop="count">
-        <el-input v-model="rateLimitRule.count"/>
+        <el-input v-model="rateLimitRule.count" />
       </el-form-item>
       <el-form-item :label="$t('table.rateLimitRule.period')" prop="intervalSec">
-        <el-input v-model="rateLimitRule.intervalSec"/>
+        <el-input v-model="rateLimitRule.intervalSec" />
       </el-form-item>
       <el-form-item :label="$t('table.rateLimitRule.status')" prop="status">
         <el-switch
@@ -142,30 +151,30 @@ export default {
         count: [
           { required: true, message: this.$t('rules.require'), trigger: 'blur' },
           { validator: (rule, value, callback) => {
-              if (!isIntegerGreaterThanZero(value)) {
-                callback(new Error(this.$t('rules.invalidInteger')))
-              } else {
-                callback()
-              }
-            }, trigger: 'blur' }
-        ],
-        intervalSec: [
-          { required: true, message: this.$t('rules.require'), trigger: 'blur' },
-          { validator: (rule, value, callback) => {
-              if (!isIntegerGreaterThanZero(value)) {
-                callback(new Error(this.$t('rules.invalidInteger')))
-              } else {
-                callback()
-              }
-            }, trigger: 'blur' }
-        ],
-        limitTime: { validator: (rule, value, callback) => {
-            if (this.rateLimitRule.timeLimit === '1' && (!this.rateLimitRule.limitFrom || !this.rateLimitRule.limitTo)) {
-              callback(new Error(this.$t('rules.require')))
+            if (!isIntegerGreaterThanZero(value)) {
+              callback(new Error(this.$t('rules.invalidInteger')))
             } else {
               callback()
             }
           }, trigger: 'blur' }
+        ],
+        intervalSec: [
+          { required: true, message: this.$t('rules.require'), trigger: 'blur' },
+          { validator: (rule, value, callback) => {
+            if (!isIntegerGreaterThanZero(value)) {
+              callback(new Error(this.$t('rules.invalidInteger')))
+            } else {
+              callback()
+            }
+          }, trigger: 'blur' }
+        ],
+        limitTime: { validator: (rule, value, callback) => {
+          if (this.rateLimitRule.timeLimit === '1' && (!this.rateLimitRule.limitFrom || !this.rateLimitRule.limitTo)) {
+            callback(new Error(this.$t('rules.require')))
+          } else {
+            callback()
+          }
+        }, trigger: 'blur' }
       }
     }
   },
@@ -200,7 +209,9 @@ export default {
         intervalSec: '',
         timeLimit: '0',
         status: '1',
-        apiId: null
+        apiId: null,
+        params: '',
+        paramFlag: 0
       }
     },
     initWidth() {
@@ -236,7 +247,26 @@ export default {
       } else {
         this.rateLimitRule.requestUri = node.path
         this.rateLimitRule.requestMethod = node.requestMethod
+        if (this.rateLimitRule.requestUri.indexOf('{') !== -1 && this.rateLimitRule.requestUri.indexOf('}') !== -1) {
+          this.rateLimitRule.paramFlag = 1
+        }
       }
+    },
+    // 通配符替换
+    paramReplace() {
+      if (this.rateLimitRule.paramFlag === 1) {
+        if (this.rateLimitRule.params.indexOf('{') !== -1 && this.rateLimitRule.params.indexOf('}') !== -1) {
+          this.$message({
+            message: this.$t('table.rateLimitRule.nst'),
+            type: 'error'
+          })
+          return false
+        } else {
+          this.rateLimitRule.requestUri = this.rateLimitRule.params
+          return true
+        }
+      }
+      return true
     },
     setRouteLimitRule(val) {
       this.rateLimitRule = { ...val }
@@ -249,18 +279,20 @@ export default {
         if (valid) {
           this.buttonLoading = true
           if (!this.rateLimitRule.id) {
-            // create
-            this.$post('system/gatewayRouteLimitRule', { ...this.rateLimitRule }).then(() => {
-              this.buttonLoading = false
-              this.isVisible = false
-              this.$message({
-                message: this.$t('tips.createSuccess'),
-                type: 'success'
+            if (this.paramReplace()) {
+              // create
+              this.$post('system/gatewayRouteLimitRule', { ...this.rateLimitRule }).then(() => {
+                this.buttonLoading = false
+                this.isVisible = false
+                this.$message({
+                  message: this.$t('tips.createSuccess'),
+                  type: 'success'
+                })
+                this.$emit('success')
+              }).catch(r => {
+                this.buttonLoading = false
               })
-              this.$emit('success')
-            }).catch(r => {
-              this.buttonLoading = false
-            })
+            }
           } else {
             // update
             this.$put('system/gatewayRouteLimitRule', { ...this.rateLimitRule }).then(() => {

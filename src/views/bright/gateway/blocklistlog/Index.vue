@@ -15,7 +15,8 @@
         clearable
         :placeholder="$t('table.blockLog.requestMethod')"
         value=""
-        class="filter-item search-item">
+        class="filter-item search-item"
+      >
         <el-option
           v-for="item in requestMethods"
           :key="item.id"
@@ -75,7 +76,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.blockLog.ip')" prop="location" :show-overflow-tooltip="true" align="center">
+      <el-table-column :label="$t('table.blockLog.location')" prop="location" :show-overflow-tooltip="true" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.location }}</span>
         </template>

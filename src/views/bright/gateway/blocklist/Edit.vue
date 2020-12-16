@@ -15,6 +15,14 @@
         <el-input v-if="!blockList.id ? false : true" v-model="blockList.requestUri" :readonly="!blockList.id ? false : 'readonly'" :placeholder="$t('table.blockList.st')" />
         <treeselect v-if="!blockList.id ? true : false" v-model="blockList.apiId" :multiple="false" :disable-branch-nodes="true" :show-count="true" :options="apis" @select="apiChange" />
       </el-form-item>
+      <el-form-item v-if="blockList.paramFlag == 1" :label="$t('table.blockList.params')" prop="requestUri">
+        <el-input v-model="blockList.params" :readonly="!blockList.id ? false : 'readonly'" />
+        <el-alert
+          :title="$t('table.blockList.alert')"
+          type="warning"
+          :closable="false"
+        />
+      </el-form-item>
       <el-form-item v-if="!blockList.id ? false : true" :label="$t('table.blockList.requestMethod')" prop="requestMethod">
         <el-select v-model="blockList.requestMethod" :disabled="!blockList.id ? false : 'disabled'" value="" placeholder="" style="width:100%">
           <el-option
@@ -105,30 +113,30 @@ export default {
         requestMethod: [
           { required: true, message: this.$t('rules.require'), trigger: '[change, blur]' },
           { validator: (rule, value, callback) => {
-              if (!this.blockList.id && this.blockList.requestMethod && this.blockList.requestUri) {
-                this.$get('system/gatewayBlockList/check', {
-                  ip: this.blockList.ip,
-                  requestUri: this.blockList.requestUri,
-                  requestMethod: this.blockList.requestMethod
-                }).then((r) => {
-                  if (!r.data) {
-                    callback(this.$t('tips.sameRule'))
-                  } else {
-                    callback()
-                  }
-                })
-              } else {
-                callback()
-              }
-            }, trigger: 'change' }
-        ],
-        limitTime: { validator: (rule, value, callback) => {
-            if (this.blockList.timeLimit === '1' && (!this.blockList.limitFrom || !this.blockList.limitTo)) {
-              callback(new Error(this.$t('rules.require')))
+            if (!this.blockList.id && this.blockList.requestMethod && this.blockList.requestUri) {
+              this.$get('system/gatewayBlockList/check', {
+                ip: this.blockList.ip,
+                requestUri: this.blockList.requestUri,
+                requestMethod: this.blockList.requestMethod
+              }).then((r) => {
+                if (!r.data) {
+                  callback(this.$t('tips.sameRule'))
+                } else {
+                  callback()
+                }
+              })
             } else {
               callback()
             }
-          }, trigger: 'blur' }
+          }, trigger: 'change' }
+        ],
+        limitTime: { validator: (rule, value, callback) => {
+          if (this.blockList.timeLimit === '1' && (!this.blockList.limitFrom || !this.blockList.limitTo)) {
+            callback(new Error(this.$t('rules.require')))
+          } else {
+            callback()
+          }
+        }, trigger: 'blur' }
       }
     }
   },
@@ -162,7 +170,9 @@ export default {
         limitTo: '',
         timeLimit: '0',
         status: '1',
-        apiId: null
+        apiId: null,
+        params: '',
+        paramFlag: 0
       }
     },
     initWidth() {
@@ -198,7 +208,26 @@ export default {
       } else {
         this.blockList.requestUri = node.path
         this.blockList.requestMethod = node.requestMethod
+        if (this.blockList.requestUri.indexOf('{') !== -1 && this.blockList.requestUri.indexOf('}') !== -1) {
+          this.blockList.paramFlag = 1
+        }
       }
+    },
+    // 通配符替换
+    paramReplace() {
+      if (this.blockList.paramFlag === 1) {
+        if (this.blockList.params.indexOf('{') !== -1 && this.blockList.params.indexOf('}') !== -1) {
+          this.$message({
+            message: this.$t('table.blockList.nst'),
+            type: 'error'
+          })
+          return false
+        } else {
+          this.blockList.requestUri = this.blockList.params
+          return true
+        }
+      }
+      return true
     },
     setBlockList(val) {
       this.blockList = { ...val }
@@ -213,18 +242,20 @@ export default {
         if (valid) {
           this.buttonLoading = true
           if (!this.blockList.id) {
-            // create
-            this.$post('system/gatewayBlockList', { ...this.blockList }).then(() => {
-              this.buttonLoading = false
-              this.isVisible = false
-              this.$message({
-                message: this.$t('tips.createSuccess'),
-                type: 'success'
+            if (this.paramReplace()) {
+              // create
+              this.$post('system/gatewayBlockList', { ...this.blockList }).then(() => {
+                this.buttonLoading = false
+                this.isVisible = false
+                this.$message({
+                  message: this.$t('tips.createSuccess'),
+                  type: 'success'
+                })
+                this.$emit('success')
+              }).catch(r => {
+                this.buttonLoading = false
               })
-              this.$emit('success')
-            }).catch(r => {
-              this.buttonLoading = false
-            })
+            }
           } else {
             // update
             this.$put('system/gatewayBlockList', { ...this.blockList }).then(() => {
