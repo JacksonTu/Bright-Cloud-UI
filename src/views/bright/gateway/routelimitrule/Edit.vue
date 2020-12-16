@@ -9,10 +9,24 @@
   >
     <el-form ref="form" :model="rateLimitRule" :rules="rules" label-position="right" label-width="129px">
       <el-form-item :label="$t('table.rateLimitRule.requestUri')" prop="requestUri">
-        <el-input v-model="rateLimitRule.requestUri" :readonly="!rateLimitRule.id ? false : 'readonly'" :placeholder="$t('table.rateLimitRule.nst')" />
+        <el-input  v-if="!rateLimitRule.id ? false:true" v-model="rateLimitRule.requestUri" :readonly="!rateLimitRule.id ? false : 'readonly'"/>
+        <treeselect
+          v-if="rateLimitRule.id === null"
+          v-model="rateLimitRule.apiId"
+          :disable-branch-nodes="true"
+          :multiple="false"
+          :options="apis"
+          :show-count="true"
+          @select="apiChange"
+        />
       </el-form-item>
-      <el-form-item :label="$t('table.rateLimitRule.requestMethod')" prop="requestMethod">
-        <el-select v-model="rateLimitRule.requestMethod" :disabled="!rateLimitRule.id ? false : 'disabled'" value="" placeholder="" style="width:100%">
+      <el-form-item  v-if="!rateLimitRule.id ? false : true" :label="$t('table.rateLimitRule.requestMethod')" prop="requestMethod">
+        <el-select
+          v-model="rateLimitRule.requestMethod"
+          :disabled="!rateLimitRule.id ? false : 'disabled'"
+          placeholder=""
+          style="width:100%"
+          value="">
           <el-option
             v-for="item in requestMethods"
             :key="item.id"
@@ -22,10 +36,10 @@
         </el-select>
       </el-form-item>
       <el-form-item :label="$t('table.rateLimitRule.count')" prop="count">
-        <el-input v-model="rateLimitRule.count" />
+        <el-input v-model="rateLimitRule.count"/>
       </el-form-item>
       <el-form-item :label="$t('table.rateLimitRule.period')" prop="intervalSec">
-        <el-input v-model="rateLimitRule.intervalSec" />
+        <el-input v-model="rateLimitRule.intervalSec"/>
       </el-form-item>
       <el-form-item :label="$t('table.rateLimitRule.status')" prop="status">
         <el-switch
@@ -71,11 +85,13 @@
   </el-dialog>
 </template>
 <script>
+import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { isIntegerGreaterThanZero } from '@/utils/my-validate'
 
 export default {
   name: 'RateLimitRuleEdit',
+  components: { Treeselect },
   props: {
     dialogVisible: {
       type: Boolean,
@@ -99,11 +115,14 @@ export default {
         { id: 4, name: 'DELETE' },
         { id: 5, name: 'ALL' }
       ],
+      apis: [],
+      queryParams: {},
       rules: {
         requestUri: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
         requestMethod: [
           { required: true, message: this.$t('rules.require'), trigger: '[change, blur]' },
-          { validator: (rule, value, callback) => {
+          {
+            validator: (rule, value, callback) => {
               if (!this.rateLimitRule.id && this.rateLimitRule.requestMethod && this.rateLimitRule.requestUri) {
                 this.$get('system/gatewayRouteLimitRule/check', {
                   requestUri: this.rateLimitRule.requestUri,
@@ -161,6 +180,14 @@ export default {
       }
     }
   },
+  mounted() {
+    this.initApi()
+    window.onresize = () => {
+      return (() => {
+        this.width = this.initWidth()
+      })()
+    }
+  },
   methods: {
     initRouteLimitRule() {
       return {
@@ -172,7 +199,8 @@ export default {
         count: '',
         intervalSec: '',
         timeLimit: '0',
-        status: '1'
+        status: '1',
+        apiId: null
       }
     },
     initWidth() {
@@ -183,6 +211,31 @@ export default {
         return '45%'
       } else {
         return '700px'
+      }
+    },
+    initApi() {
+      this.$get('system/api/treeApi', {
+        ...this.queryParams
+      }).then((r) => {
+        this.apis = r.data.data.rows
+      }).catch((error) => {
+        console.error(error)
+        this.$message({
+          message: this.$t('tips.getDataFail'),
+          type: 'error'
+        })
+      })
+    },
+    apiChange(node) {
+      console.log('node', node)
+      if (node.parentId === '0') {
+        this.$message({
+          message: this.$t('table.job.getApiDataFail'),
+          type: 'error'
+        })
+      } else {
+        this.rateLimitRule.requestUri = node.path
+        this.rateLimitRule.requestMethod = node.requestMethod
       }
     },
     setRouteLimitRule(val) {
@@ -232,6 +285,7 @@ export default {
       this.$refs.form.clearValidate()
       this.$refs.form.resetFields()
       this.rateLimitRule = this.initRouteLimitRule()
+      this.apis = this.initApi()
     }
   }
 }

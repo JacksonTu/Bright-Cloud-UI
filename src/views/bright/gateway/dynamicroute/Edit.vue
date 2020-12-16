@@ -28,8 +28,8 @@
       </el-form-item>
       <el-form-item :label="$t('table.dynamicRoute.enable')" prop="enable">
         <el-select v-model="dynamicRoute.enable" placeholder="" value="" style="width:100%">
-          <el-option label="有效" value="1" />
-          <el-option label="无效" value="0" />
+          <el-option :label="$t('table.status.valid')" value="1" />
+          <el-option :label="$t('table.status.invalid')" value="0" />
         </el-select>
       </el-form-item>
     </el-form>

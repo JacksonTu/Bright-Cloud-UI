@@ -12,9 +12,10 @@
         <el-input v-model="blockList.ip" :readonly="!blockList.id ? false : 'readonly'" />
       </el-form-item>
       <el-form-item :label="$t('table.blockList.requestUri')" prop="requestUri">
-        <el-input v-model="blockList.requestUri" :readonly="!blockList.id ? false : 'readonly'" :placeholder="$t('table.blockList.st')" />
+        <el-input v-if="!blockList.id ? false : true" v-model="blockList.requestUri" :readonly="!blockList.id ? false : 'readonly'" :placeholder="$t('table.blockList.st')" />
+        <treeselect v-if="!blockList.id ? true : false" v-model="blockList.apiId" :multiple="false" :disable-branch-nodes="true" :show-count="true" :options="apis" @select="apiChange" />
       </el-form-item>
-      <el-form-item :label="$t('table.blockList.requestMethod')" prop="requestMethod">
+      <el-form-item v-if="!blockList.id ? false : true" :label="$t('table.blockList.requestMethod')" prop="requestMethod">
         <el-select v-model="blockList.requestMethod" :disabled="!blockList.id ? false : 'disabled'" value="" placeholder="" style="width:100%">
           <el-option
             v-for="item in requestMethods"
@@ -68,10 +69,12 @@
   </el-dialog>
 </template>
 <script>
+import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   name: 'BlockListEdit',
+  components: { Treeselect },
   props: {
     dialogVisible: {
       type: Boolean,
@@ -95,6 +98,8 @@ export default {
         { id: 4, name: 'DELETE' },
         { id: 5, name: 'ALL' }
       ],
+      apis: [],
+      queryParams: {},
       rules: {
         requestUri: { required: true, message: this.$t('rules.require'), trigger: 'blur' },
         requestMethod: [
@@ -138,6 +143,14 @@ export default {
       }
     }
   },
+  mounted() {
+    this.initApi()
+    window.onresize = () => {
+      return (() => {
+        this.width = this.initWidth()
+      })()
+    }
+  },
   methods: {
     initBlockList() {
       return {
@@ -148,7 +161,8 @@ export default {
         limitFrom: '',
         limitTo: '',
         timeLimit: '0',
-        status: '1'
+        status: '1',
+        apiId: null
       }
     },
     initWidth() {
@@ -159,6 +173,31 @@ export default {
         return '45%'
       } else {
         return '700px'
+      }
+    },
+    initApi() {
+      this.$get('system/api/treeApi', {
+        ...this.queryParams
+      }).then((r) => {
+        this.apis = r.data.data.rows
+      }).catch((error) => {
+        console.error(error)
+        this.$message({
+          message: this.$t('tips.getDataFail'),
+          type: 'error'
+        })
+      })
+    },
+    apiChange(node) {
+      console.log('node', node)
+      if (node.parentId === '0') {
+        this.$message({
+          message: this.$t('table.job.getApiDataFail'),
+          type: 'error'
+        })
+      } else {
+        this.blockList.requestUri = node.path
+        this.blockList.requestMethod = node.requestMethod
       }
     },
     setBlockList(val) {
@@ -210,6 +249,7 @@ export default {
       this.$refs.form.clearValidate()
       this.$refs.form.resetFields()
       this.blockList = this.initBlockList()
+      this.apis = this.initApi()
     }
   }
 }

@@ -9,7 +9,20 @@
     <div class="filter-container">
       <el-input v-model="queryParams.ip" :placeholder="$t('table.blockList.ip')" class="filter-item search-item" />
       <el-input v-model="queryParams.requestUri" :placeholder="$t('table.blockList.requestUri')" class="filter-item search-item" />
-      <el-input v-model="queryParams.requestMethod" :placeholder="$t('table.blockList.requestMethod')" class="filter-item search-item" />
+      <el-select
+        v-model="queryParams.requestMethod"
+        filterable
+        clearable
+        :placeholder="$t('table.blockList.requestMethod')"
+        value=""
+        class="filter-item search-item">
+        <el-option
+          v-for="item in requestMethods"
+          :key="item.id"
+          :label="item.name"
+          :value="String(item.name)"
+        />
+      </el-select>
       <el-button class="filter-item" type="primary" @click="search">
         {{ $t('table.search') }}
       </el-button>
@@ -149,7 +162,14 @@ export default {
       pagination: {
         size: 10,
         num: 1
-      }
+      },
+      requestMethods: [
+        { id: 1, name: 'GET' },
+        { id: 2, name: 'POST' },
+        { id: 3, name: 'PUT' },
+        { id: 4, name: 'DELETE' },
+        { id: 5, name: 'ALL' }
+      ]
     }
   },
   mounted() {

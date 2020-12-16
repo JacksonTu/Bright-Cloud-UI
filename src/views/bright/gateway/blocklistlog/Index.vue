@@ -9,7 +9,20 @@
     <div class="filter-container">
       <el-input v-model="queryParams.ip" :placeholder="$t('table.blockLog.ip')" class="filter-item search-item" />
       <el-input v-model="queryParams.requestUri" :placeholder="$t('table.blockLog.requestUri')" class="filter-item search-item" />
-      <el-input v-model="queryParams.requestMethod" :placeholder="$t('table.blockLog.requestMethod')" class="filter-item search-item" />
+      <el-select
+        v-model="queryParams.requestMethod"
+        filterable
+        clearable
+        :placeholder="$t('table.blockLog.requestMethod')"
+        value=""
+        class="filter-item search-item">
+        <el-option
+          v-for="item in requestMethods"
+          :key="item.id"
+          :label="item.name"
+          :value="String(item.name)"
+        />
+      </el-select>
       <el-date-picker
         v-model="queryParams.timeRange"
         :range-separator="null"
@@ -121,7 +134,14 @@ export default {
       pagination: {
         size: 10,
         num: 1
-      }
+      },
+      requestMethods: [
+        { id: 1, name: 'GET' },
+        { id: 2, name: 'POST' },
+        { id: 3, name: 'PUT' },
+        { id: 4, name: 'DELETE' },
+        { id: 5, name: 'ALL' }
+      ]
     }
   },
   mounted() {

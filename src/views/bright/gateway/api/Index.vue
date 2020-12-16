@@ -21,7 +21,6 @@
           {{ $t('table.more') }}<i class="el-icon-arrow-down el-icon--right" />
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-has-permission="['api:add']" @click.native="add">{{ $t('table.add') }}</el-dropdown-item>
           <el-dropdown-item v-has-permission="['api:delete']" @click.native="batchDelete">{{ $t('table.delete') }}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

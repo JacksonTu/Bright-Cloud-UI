@@ -7,7 +7,7 @@ module.exports = {
   // 请替换为您的实际地址
   pages: {
     // 消息推送 websocket
-    wsUrl: 'http://59.110.223.220:8002/ws',
+    wsUrl: 'http://localhost:8002/ws',
     // Bright-Admin 控制台地址
     springBootAdminUrl: 'http://59.110.223.220:8006/login',
     // 文档中心
