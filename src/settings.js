@@ -3,17 +3,17 @@ module.exports = {
   // 获取令牌时，请求头信息(Basic Base64.encode(client_id:client_secret))
   authorizationValue: 'Basic YnJpZ2h0OjEyMzQ1Ng==',
   // 社交登录后台地址
-  socialLoginUrl: 'http://59.110.223.220:8002/auth/social/login',
+  socialLoginUrl: 'http://localhost:8002/auth/social/login',
   // 请替换为您的实际地址
   pages: {
     // 消息推送 websocket
     wsUrl: 'http://localhost:8002/ws',
     // Bright-Admin 控制台地址
-    springBootAdminUrl: 'http://59.110.223.220:8006/login',
+    springBootAdminUrl: 'http://localhost:8006/login',
     // 文档中心
-    docUrl: 'http://59.110.223.220:8002/doc.html',
+    docUrl: 'http://localhost:8002/doc.html',
     // nacos 控制台地址
-    nacosUrl: 'http://106.13.130.94:8848/nacos',
+    nacosUrl: 'http://localhost:8848/nacos',
     // kibana 控制台地址
     kibanaUrl: 'http://localhost:9400',
     // skywalking地址
